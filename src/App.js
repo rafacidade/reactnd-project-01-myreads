@@ -78,11 +78,10 @@ class BooksApp extends React.Component {
 						/>
 					)}
 				/>
-        		<Route 
-					exact path='/' 
-					render={() => (        
-          				<div className="list-books">
-            				<div className="list-books-title">
+				<Route
+					exact path='/'
+					render={() => (
+						<div className="list-books">									<div className="list-books-title">
               					<h1>MyReads</h1>
 							</div>
             				<div className="list-books-content">
