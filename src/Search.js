@@ -7,7 +7,8 @@ class Search extends Component {
     static propTypes = {
         searchBooks: PropTypes.func.isRequired,
         moveBook: PropTypes.func.isRequired,
-        searchBooksResults: PropTypes.array.isRequired
+        searchBooksResults: PropTypes.array.isRequired,
+        searchTerms: PropTypes.string
     }
 
     searchBooks = event => {
@@ -15,25 +16,25 @@ class Search extends Component {
     }
 
     render() {
-        const books = this.props.searchBooksResults
+        const { searchBooksResults, moveBook, searchTerms } = this.props
 
 		return (
-        <div className="search-books">
-            <div className="search-books-bar">
-              <Link to="/">
-                <button className="close-search">Back</button>
-              </Link>
-              <div className="search-books-input-wrapper">
-                <input type="text" placeholder="Search by title or author" onChange={this.searchBooks} />
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ListBooks
-                books={books}
-                moveBook={this.props.moveBook}
-              />
-            </div>
-        </div>            
+            <div className="search-books">
+                <div className="search-books-bar">
+                <Link to="/">
+                    <button className="close-search">Back</button>
+                </Link>
+                <div className="search-books-input-wrapper">
+                    <input type="text" placeholder="Search by title or author" onChange={this.searchBooks} value={searchTerms}/>
+                </div>
+                </div>
+                <div className="search-books-results">
+                <ListBooks
+                    books={searchBooksResults}
+                    moveBook={moveBook}
+                />
+                </div>
+            </div>            
 		)
 	}   
 }

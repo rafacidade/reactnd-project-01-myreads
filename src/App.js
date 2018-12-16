@@ -4,20 +4,38 @@ import './App.css'
 import Shelf from './Shelf'
 import Search from './Search'
 import { Route, Link } from 'react-router-dom'
+import bookNoImage from './images/book-noimage.png'
 
 class BooksApp extends React.Component {
 	state = {
     books: [],
-    searchBooksResults: []
+    searchBooksResults: [],
+    searchTerms: ''
   }
 
 	componentDidMount() {
 		BooksAPI.getAll().then((response) => {
-      this.setState({ books: response })
-		})
+      this.setState({ books: this.normalizeBooks(response) })
+    })    
+  }
+  
+  //complete book object if necessary
+  normalizeBooks = (books) => {
+		return books.map(book => {
+      if (book.authors === undefined) {
+        book = {...book, authors: [] }
+      }
+      if (book.shelf === undefined) {
+        book = {...book, shelf: 'none' }
+      }
+      if (book.imageLinks === undefined) {
+        book = {...book, imageLinks: { smallThumbnail: bookNoImage } }
+      }
+      return book
+    })
 	}
 
-	getShelfBooks = (shelf) => {
+  getShelfBooks = (shelf) => {
 		return this.state.books.filter((book) => book.shelf === shelf)
 	}
 
@@ -34,11 +52,15 @@ class BooksApp extends React.Component {
 	}
 
   searchBooks = (query) => {
-    this.setState({ books: [] })
+    //update search terms and clear previous results
+    this.setState({ searchTerms: query })
+    this.setState({ searchBooksResults: [] })
 
     if(query) {
-      BooksAPI.search(query).then( response => {
-        this.setState({ searchBooksResults: response })
+      BooksAPI.search( query.trim() ).then( response => {
+        if(!response.error) {
+          this.setState({ searchBooksResults: this.normalizeBooks(response) })
+        }
       })
     }
   }
@@ -47,8 +69,14 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route path='/search' render={({ history }) => (
-          <Search searchBooks={this.searchBooks} moveBook={this.moveBook} searchBooksResults={this.state.searchBooksResults}/>        
-        )} />
+          <Search 
+            searchBooks={this.searchBooks} 
+            moveBook={this.moveBook} 
+            searchBooksResults={this.state.searchBooksResults} 
+            searchTerms={this.state.searchTerms}
+          />        
+        )} 
+        />
         <Route exact path='/' render={() => (        
           <div className="list-books">
             <div className="list-books-title">
@@ -78,7 +106,8 @@ class BooksApp extends React.Component {
                 <div className="open-search"><button>Search</button></div>
             </Link>            
           </div>
-        )} />
+        )} 
+        />
       </div>
     )
   }

@@ -13,15 +13,15 @@ class Shelf extends Component {
 		const { shelfTitle, books, moveBook } = this.props
 
 		return (
-		<div className="bookshelf">
-        	<h2 className="bookshelf-title">{shelfTitle} ({books.length})</h2>        	
-            <div className="bookshelf-books">
-            	<ListBooks 
-            		books={books}
-            		moveBook={moveBook}
-        		/>
-            </div>
-        </div>
+			<div className="bookshelf">
+				<h2 className="bookshelf-title">{shelfTitle} ({books.length})</h2>        	
+				<div className="bookshelf-books">
+					<ListBooks 
+						books={books}
+						moveBook={moveBook}
+					/>
+				</div>
+			</div>
 		)
 	}   
 }
