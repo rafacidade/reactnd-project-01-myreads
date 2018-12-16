@@ -7,12 +7,13 @@ import { Route, Link } from 'react-router-dom'
 
 class BooksApp extends React.Component {
 	state = {
-    books: []
+    books: [],
+    searchBooksResults: []
   }
 
 	componentDidMount() {
-		BooksAPI.getAll().then((books) => {
-      this.setState({ books })
+		BooksAPI.getAll().then((response) => {
+      this.setState({ books: response })
 		})
 	}
 
@@ -37,8 +38,7 @@ class BooksApp extends React.Component {
 
     if(query) {
       BooksAPI.search(query).then( response => {
-        console.log(response)
-        this.setState({ books: response })
+        this.setState({ searchBooksResults: response })
       })
     }
   }
@@ -47,7 +47,7 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route path='/search' render={({ history }) => (
-          <Search searchBooks={this.searchBooks} moveBook={this.moveBook} searchBooksResults={this.state.books}/>        
+          <Search searchBooks={this.searchBooks} moveBook={this.moveBook} searchBooksResults={this.state.searchBooksResults}/>        
         )} />
         <Route exact path='/' render={() => (        
           <div className="list-books">
