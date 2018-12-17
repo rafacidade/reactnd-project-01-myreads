@@ -8,10 +8,6 @@ class ListBooks extends Component {
 	    moveBook: PropTypes.func.isRequired
 	}
 
-	state = {
-		query: ''
-	}
-
 	render() {
     	const { books, moveBook } = this.props
 

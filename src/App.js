@@ -34,6 +34,23 @@ class BooksApp extends React.Component {
 			return book
 		})
 	}
+
+	//set shelf for books in search results
+	setShelf = () => {
+		let books = []
+		for(let book of this.state.searchBooksResults) {
+			for(const b of this.state.books) {
+				if (b.id === book.id) {
+					book.shelf = b.shelf
+				}				
+			}
+
+			books = [...books, book]
+		}
+		
+		this.setState( { searchBooksResults: books } )
+		console.log(this.state.searchBooksResults)
+	}
 	
 	getShelfBooks = (shelf) => {
 		return this.state.books.filter((book) => book.shelf === shelf)
@@ -59,6 +76,7 @@ class BooksApp extends React.Component {
 			BooksAPI.search( query.trim() ).then( response => {
 				if(!response.error) {
 					this.setState({ searchBooksResults: this.normalizeBooks(response) })
+					this.setShelf()
 				}
 			})
 		}
@@ -81,7 +99,8 @@ class BooksApp extends React.Component {
 				<Route
 					exact path='/'
 					render={() => (
-						<div className="list-books">									<div className="list-books-title">
+						<div className="list-books">
+							<div className="list-books-title">
               					<h1>MyReads</h1>
 							</div>
             				<div className="list-books-content">

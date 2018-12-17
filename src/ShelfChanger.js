@@ -11,7 +11,8 @@ class ShelfChanger extends Component {
         this.props.moveBook(this.props.book, event.target.value);	
 
 	render() {
-		const shelf = this.props.book.shelf
+        const shelf = this.props.book.shelf
+        console.log(this.props.book)
 
         return (
             <div className="book-shelf-changer">
