@@ -49,7 +49,6 @@ class BooksApp extends React.Component {
 		}
 		
 		this.setState( { searchBooksResults: books } )
-		console.log(this.state.searchBooksResults)
 	}
 	
 	getShelfBooks = (shelf) => {
